@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node *newNode(int x) {
+    struct node *n = malloc(sizeof(struct node));
+    n->data = x; n->left = n->right = NULL;
+    return n;
+}
+
+void preorder(struct node *root) {
+    if (root) {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+void inorder(struct node *root) {
+    if (root) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+void postorder(struct node *root) {
+    if (root) {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+int main() {
+    struct node *root = newNode(1);
+    root->left  = newNode(2);
+    root->right = newNode(3);
+
+    preorder(root);
+    inorder(root);
+    postorder(root);
+}
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node { int data; struct node *next; };
+struct node *front = NULL, *rear = NULL;
+
+void enqueue(int x) {
+    struct node *n = malloc(sizeof(struct node));
+    n->data = x; n->next = NULL;
+    if (!front) front = rear = n;
+    else { rear->next = n; rear = n; }
+}
+
+int dequeue() {
+    struct node *temp = front;
+    int x = temp->data;
+    front = front->next;
+    free(temp);
+    return x;
+}
+
+void display() {
+    struct node *temp = front;
+    while (temp) { printf("%d ", temp->data); temp = temp->next; }
+}
+
+int main() {
+    enqueue(10); enqueue(20); enqueue(30);
+    dequeue();
+    display();
+}
