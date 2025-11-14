@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+} *head = NULL;
+
+void create(int x) {
+    struct node *newnode = malloc(sizeof(struct node));
+    newnode->data = x;
+    newnode->next = head;
+    head = newnode;
+}
+
+void insert(int x, int pos) {
+    struct node *newnode = malloc(sizeof(struct node));
+    newnode->data = x;
+
+    if (pos == 1) {
+        newnode->next = head;
+        head = newnode;
+        return;
+    }
+    struct node *temp = head;
+    for (int i = 1; i < pos - 1; i++) temp = temp->next;
+    newnode->next = temp->next;
+    temp->next = newnode;
+}
+
+void delete(int pos) {
+    struct node *temp = head, *prev;
+    if (pos == 1) {
+        head = head->next;
+        free(temp);
+        return;
+    }
+    for (int i = 1; i < pos; i++) {
+        prev = temp;
+        temp = temp->next;
+    }
+    prev->next = temp->next;
+    free(temp);
+}
+
+void traverse() {
+    struct node *temp = head;
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    create(30); create(20); create(10);
+    insert(5, 1);
+    delete(2);
+    traverse();
+}
+#include <stdio.h>
+#define SIZE 50
+
+int q[SIZE], front = -1, rear = -1;
+
+void enqueue(int x) {
+    if (front == -1) front = 0;
+    q[++rear] = x;
+}
+
+int dequeue() { return q[front++]; }
+
+void display() {
+    for (int i = front; i <= rear; i++) printf("%d ", q[i]);
+}
+
+int main() {
+    enqueue(10); enqueue(20); enqueue(30);
+    dequeue();
+    display();
+}
